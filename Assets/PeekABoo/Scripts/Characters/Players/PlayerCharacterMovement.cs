@@ -1,19 +1,38 @@
 ﻿using System.Collections.Generic;
 using CardboardCore.Cameras.VirtualCameras;
 using CardboardCore.DI;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PeekABoo.Characters.Players
 {
     public class PlayerCharacterMovement : PlayerCharacterComponent
     {
+        private enum MovementState
+        {
+            Walking,
+            Crouching,
+            Sprinting
+        }
+
         [Header("References")]
         [SerializeField] private new Rigidbody rigidbody;
+        [SerializeField] private Collider defaultBodyCollider;
+        [SerializeField] private Collider crouchingBodyCollider;
+        [SerializeField] private Transform defaultCameraPoint;
+        [SerializeField] private Transform crouchingCameraPoint;
 
         [Header("Movement Settings")]
         [SerializeField] private float accelerationStrength = 300f;
-        [SerializeField] private float maxSpeed = 5f;
+        [SerializeField] private float maxWalkSpeed = 2.5f;
+        [SerializeField] private float maxCrouchSpeed = 1.5f;
+        [SerializeField] private float maxSprintSpeed = 5f;
         [SerializeField] private float counterFriction = 0.1f;
+
+        [Header("Crouch Transition Settings")]
+        [SerializeField] private Ease crouchTransitionEase = Ease.OutCubic;
+        [SerializeField] private float crouchTransitionDuration = 0.5f;
 
         [Header("Jump Settings")]
         [SerializeField] private float jumpForce = 5f;
@@ -31,6 +50,10 @@ namespace PeekABoo.Characters.Players
         private Vector3 previousVelocity;
         private Vector3 counterFrictionVelocity;
 
+        private MovementState movementState;
+
+        private Tween crouchTransitionTween;
+
         public bool IsGrounded { get; private set; }
 
         protected override void OnInjected()
@@ -38,6 +61,18 @@ namespace PeekABoo.Characters.Players
             base.OnInjected();
 
             playerCharacterInput = Owner.GetCharacterComponent<PlayerCharacterInput>();
+            playerCharacterInput.CrouchEvent += OnCrouch;
+            playerCharacterInput.SprintEvent += OnSprint;
+
+            movementState = MovementState.Walking;
+        }
+
+        protected override void OnReleased()
+        {
+            playerCharacterInput.CrouchEvent -= OnCrouch;
+            playerCharacterInput.SprintEvent -= OnSprint;
+
+            base.OnReleased();
         }
 
         private void FixedUpdate()
@@ -81,7 +116,22 @@ namespace PeekABoo.Characters.Players
 
             currentVelocity = Vector3.zero;
 
-            float maxMovementSpeed = IsGrounded ? maxSpeed : maxAirSpeed;
+            float maxMovementSpeed = 0f;
+
+            switch (movementState)
+            {
+                case MovementState.Walking:
+                    maxMovementSpeed = maxWalkSpeed;
+                    break;
+                case MovementState.Crouching:
+                    maxMovementSpeed = maxCrouchSpeed;
+                    break;
+                case MovementState.Sprinting:
+                    maxMovementSpeed = maxSprintSpeed;
+                    break;
+            }
+
+            maxMovementSpeed = IsGrounded ? maxMovementSpeed : maxAirSpeed;
 
             if (comparableVelocity.magnitude > maxMovementSpeed)
             {
@@ -114,6 +164,46 @@ namespace PeekABoo.Characters.Players
             }
 
             rigidbody.linearVelocity = Vector3.SmoothDamp(rigidbody.linearVelocity, targetVelocity, ref counterFrictionVelocity, counterFriction);
+        }
+
+        private void OnCrouch()
+        {
+            Vector3 targetPosition = Vector3.zero;
+
+            switch (movementState)
+            {
+                case MovementState.Walking:
+                    targetPosition = crouchingCameraPoint.localPosition;
+                    movementState = MovementState.Crouching;
+                    break;
+
+                case MovementState.Crouching:
+                    targetPosition = defaultCameraPoint.localPosition;
+                    movementState = MovementState.Walking;
+                    break;
+            }
+
+            crouchTransitionTween?.Kill();
+            crouchTransitionTween = Owner.FirstPersonCamera.transform.DOLocalMove(targetPosition, crouchTransitionDuration)
+                .SetEase(crouchTransitionEase);
+        }
+
+        private void OnSprint(bool performed)
+        {
+            if (performed)
+            {
+                if (movementState == MovementState.Walking)
+                {
+                    movementState = MovementState.Sprinting;
+                }
+            }
+            else
+            {
+                if (movementState == MovementState.Sprinting)
+                {
+                    movementState = MovementState.Walking;
+                }
+            }
         }
     }
 }
