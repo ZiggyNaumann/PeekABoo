@@ -9,7 +9,6 @@ namespace PeekABoo.Characters.Players
     {
         [Header("References")]
         [SerializeField] private new Rigidbody rigidbody;
-        [SerializeField] private PlayerCharacterInput playerInput;
 
         [Header("Movement Settings")]
         [SerializeField] private float accelerationStrength = 300f;
@@ -26,11 +25,20 @@ namespace PeekABoo.Characters.Players
 
         [Inject] private VirtualCameraManager virtualCameraManager;
 
+        private PlayerCharacterInput playerCharacterInput;
+
         private Vector3 currentVelocity;
         private Vector3 previousVelocity;
         private Vector3 counterFrictionVelocity;
 
         public bool IsGrounded { get; private set; }
+
+        protected override void OnInjected()
+        {
+            base.OnInjected();
+
+            playerCharacterInput = Owner.GetCharacterComponent<PlayerCharacterInput>();
+        }
 
         private void FixedUpdate()
         {
@@ -52,11 +60,11 @@ namespace PeekABoo.Characters.Players
 
             Debug.DrawRay(isGroundedCheckPosition, Vector3.down * isGroundedCheckDistance, IsGrounded ? Color.green : Color.red);
 
-            Vector3 moveDirection = playerInput.MoveDirection;
+            Vector3 moveDirection = playerCharacterInput.MoveDirection;
 
             virtualCameraManager.CameraController.ProjectOnPlane(ref moveDirection);
 
-            if (playerInput.MoveDirection == Vector3.zero)
+            if (playerCharacterInput.MoveDirection == Vector3.zero)
             {
                 return;
             }
@@ -91,7 +99,7 @@ namespace PeekABoo.Characters.Players
                 return;
             }
 
-            if (playerInput.MoveDirection != Vector3.zero)
+            if (playerCharacterInput.MoveDirection != Vector3.zero)
             {
                 return;
             }

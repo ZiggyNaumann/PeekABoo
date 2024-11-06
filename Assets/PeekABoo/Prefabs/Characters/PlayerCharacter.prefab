@@ -166,7 +166,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 6244436997328350574}
-  playerInput: {fileID: 9063545644527968064}
   accelerationStrength: 3000
   maxSpeed: 2.5
   counterFriction: 0.1
@@ -188,6 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6101b34c0264637bd30a05540a465ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  viewTransform: {fileID: 1847254619001096009}
 --- !u!1 &2017189051154650568
 GameObject:
   m_ObjectHideFlags: 0

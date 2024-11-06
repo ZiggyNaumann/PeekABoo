@@ -1,6 +1,4 @@
 ﻿using CardboardCore.DI;
-using CardboardCore.Utilities;
-using PeekABoo.Cameras;
 using PeekABook.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +11,6 @@ namespace PeekABoo.Characters.Players
 
         [SerializeField] private float lookSensitivity = 1.0f;
 
-        private DeltaBasedRotationModule deltaBasedRotationModule;
         private bool initialLookInputGiven;
 
         public Vector2 LookDelta { get; private set; }
@@ -28,11 +25,6 @@ namespace PeekABoo.Characters.Players
 
             inputManager.Player.Move.performed += OnMovePerformed;
             inputManager.Player.Move.canceled += OnMovePerformed;
-
-            if (!Owner.FirstPersonCamera.TryGetCameraModule(out deltaBasedRotationModule))
-            {
-                Log.Exception($"Could not find LookAroundModule in virtual camera with name 'FirstPerson'");
-            }
         }
 
         protected override void OnReleased()
@@ -57,8 +49,6 @@ namespace PeekABoo.Characters.Players
 
             Vector2 pixelBasedDelta = obj.ReadValue<Vector2>();
             Vector2 normalizedDelta = pixelBasedDelta * lookSensitivity * Time.deltaTime;
-
-            deltaBasedRotationModule.AddDelta(normalizedDelta);
 
             LookDelta = normalizedDelta;
         }

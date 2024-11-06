@@ -1957,6 +1957,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   virtualCameras:
   - {fileID: 1466638283}
+  - {fileID: 0}
 --- !u!114 &356871700
 MonoBehaviour:
   m_ObjectHideFlags: 0

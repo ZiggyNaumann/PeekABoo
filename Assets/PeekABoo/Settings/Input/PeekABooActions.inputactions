@@ -990,6 +990,56 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Intro",
+            "id": "5528c0c0-25f6-4315-b939-e4adb867bcec",
+            "actions": [
+                {
+                    "name": "Skip",
+                    "type": "Button",
+                    "id": "16e702c5-8379-4602-8680-2f4b6a0d3ef3",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "71bab38c-3c20-4087-840a-a595683b6767",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "237fe050-c1df-4d98-bf86-b70538c080b1",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cbcf0b46-feee-4655-a36b-55efafe69d4e",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [
