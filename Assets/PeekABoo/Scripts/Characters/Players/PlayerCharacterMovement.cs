@@ -176,7 +176,7 @@ namespace PeekABoo.Characters.Players
             switch (movementState)
             {
                 case MovementState.Walking:
-                    
+
                     targetPosition = crouchingCameraPoint.localPosition;
                     movementState = MovementState.Crouching;
 
