@@ -168,11 +168,11 @@ MonoBehaviour:
   rigidbody: {fileID: 6244436997328350574}
   playerInput: {fileID: 9063545644527968064}
   accelerationStrength: 3000
-  maxSpeed: 5
+  maxSpeed: 2.5
   counterFriction: 0.1
   jumpForce: 5
   isGroundedCheckOffset: 1
-  isGroundedCheckDistance: 1.1
+  isGroundedCheckDistance: 1.3
   jumpDirectionalForce: 20
   maxAirSpeed: 5
   airAccelerationStrength: 150
@@ -369,7 +369,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6435395015379994645}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 596868e2bec1d014a9cdc8e8796b37b7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
