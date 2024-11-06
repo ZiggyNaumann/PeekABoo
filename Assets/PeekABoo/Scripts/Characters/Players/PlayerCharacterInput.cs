@@ -1,6 +1,5 @@
-﻿using CardboardCore.DI;
-using CardboardCore.Utilities;
-using PeekABoo.Cameras;
+﻿using System;
+using CardboardCore.DI;
 using PeekABook.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,11 +12,13 @@ namespace PeekABoo.Characters.Players
 
         [SerializeField] private float lookSensitivity = 1.0f;
 
-        private DeltaBasedRotationModule deltaBasedRotationModule;
         private bool initialLookInputGiven;
 
         public Vector2 LookDelta { get; private set; }
         public Vector3 MoveDirection { get; private set; }
+
+        public event Action CrouchEvent;
+        public event Action<bool> SprintEvent;
 
         protected override void OnInjected()
         {
@@ -29,10 +30,11 @@ namespace PeekABoo.Characters.Players
             inputManager.Player.Move.performed += OnMovePerformed;
             inputManager.Player.Move.canceled += OnMovePerformed;
 
-            if (!Owner.FirstPersonCamera.TryGetCameraModule(out deltaBasedRotationModule))
-            {
-                Log.Exception($"Could not find LookAroundModule in virtual camera with name 'FirstPerson'");
-            }
+            inputManager.Player.Crouch.performed += OnCrouchPerformed;
+
+            inputManager.Player.Sprint.performed += OnSprintPerformed;
+            inputManager.Player.Sprint.canceled += OnSprintPerformed;
+
         }
 
         protected override void OnReleased()
@@ -42,6 +44,11 @@ namespace PeekABoo.Characters.Players
 
             inputManager.Player.Move.performed -= OnMovePerformed;
             inputManager.Player.Move.canceled -= OnMovePerformed;
+
+            inputManager.Player.Crouch.performed -= OnCrouchPerformed;
+
+            inputManager.Player.Sprint.performed -= OnSprintPerformed;
+            inputManager.Player.Sprint.canceled -= OnSprintPerformed;
 
             base.OnReleased();
         }
@@ -58,8 +65,6 @@ namespace PeekABoo.Characters.Players
             Vector2 pixelBasedDelta = obj.ReadValue<Vector2>();
             Vector2 normalizedDelta = pixelBasedDelta * lookSensitivity * Time.deltaTime;
 
-            deltaBasedRotationModule.AddDelta(normalizedDelta);
-
             LookDelta = normalizedDelta;
         }
 
@@ -69,6 +74,16 @@ namespace PeekABoo.Characters.Players
             Vector3 moveDirection = new Vector3(localMoveInput.x, 0, localMoveInput.y);
 
             MoveDirection = moveDirection;
+        }
+
+        private void OnCrouchPerformed(InputAction.CallbackContext obj)
+        {
+            CrouchEvent?.Invoke();
+        }
+
+        private void OnSprintPerformed(InputAction.CallbackContext obj)
+        {
+            SprintEvent?.Invoke(obj.performed);
         }
     }
 }

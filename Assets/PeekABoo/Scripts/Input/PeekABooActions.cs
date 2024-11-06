@@ -60,7 +60,7 @@ namespace PeekABook.Input
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""852140f2-7766-474d-8707-702459ba45f3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
@@ -69,7 +69,7 @@ namespace PeekABook.Input
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""27c5f898-bc57-4ee1-8800-db469aca5fe3"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -1014,6 +1014,56 @@ namespace PeekABook.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Intro"",
+            ""id"": ""5528c0c0-25f6-4315-b939-e4adb867bcec"",
+            ""actions"": [
+                {
+                    ""name"": ""Skip"",
+                    ""type"": ""Button"",
+                    ""id"": ""16e702c5-8379-4602-8680-2f4b6a0d3ef3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""71bab38c-3c20-4087-840a-a595683b6767"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""237fe050-c1df-4d98-bf86-b70538c080b1"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cbcf0b46-feee-4655-a36b-55efafe69d4e"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Skip"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1102,12 +1152,16 @@ namespace PeekABook.Input
             m_UI_ScrollWheel = m_UI.FindAction("ScrollWheel", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            // Intro
+            m_Intro = asset.FindActionMap("Intro", throwIfNotFound: true);
+            m_Intro_Skip = m_Intro.FindAction("Skip", throwIfNotFound: true);
         }
 
         ~@PeekABooActions()
         {
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PeekABooActions.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PeekABooActions.UI.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_Intro.enabled, "This will cause a leak and performance issues, PeekABooActions.Intro.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -1393,6 +1447,52 @@ namespace PeekABook.Input
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // Intro
+        private readonly InputActionMap m_Intro;
+        private List<IIntroActions> m_IntroActionsCallbackInterfaces = new List<IIntroActions>();
+        private readonly InputAction m_Intro_Skip;
+        public struct IntroActions
+        {
+            private @PeekABooActions m_Wrapper;
+            public IntroActions(@PeekABooActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Skip => m_Wrapper.m_Intro_Skip;
+            public InputActionMap Get() { return m_Wrapper.m_Intro; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(IntroActions set) { return set.Get(); }
+            public void AddCallbacks(IIntroActions instance)
+            {
+                if (instance == null || m_Wrapper.m_IntroActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_IntroActionsCallbackInterfaces.Add(instance);
+                @Skip.started += instance.OnSkip;
+                @Skip.performed += instance.OnSkip;
+                @Skip.canceled += instance.OnSkip;
+            }
+
+            private void UnregisterCallbacks(IIntroActions instance)
+            {
+                @Skip.started -= instance.OnSkip;
+                @Skip.performed -= instance.OnSkip;
+                @Skip.canceled -= instance.OnSkip;
+            }
+
+            public void RemoveCallbacks(IIntroActions instance)
+            {
+                if (m_Wrapper.m_IntroActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IIntroActions instance)
+            {
+                foreach (var item in m_Wrapper.m_IntroActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_IntroActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public IntroActions @Intro => new IntroActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1462,6 +1562,10 @@ namespace PeekABook.Input
             void OnScrollWheel(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        }
+        public interface IIntroActions
+        {
+            void OnSkip(InputAction.CallbackContext context);
         }
     }
 }
