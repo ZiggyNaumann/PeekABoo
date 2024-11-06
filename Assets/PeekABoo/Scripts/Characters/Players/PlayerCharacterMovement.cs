@@ -65,6 +65,9 @@ namespace PeekABoo.Characters.Players
             playerCharacterInput.SprintEvent += OnSprint;
 
             movementState = MovementState.Walking;
+
+            defaultBodyCollider.enabled = true;
+            crouchingBodyCollider.enabled = false;
         }
 
         protected override void OnReleased()
@@ -173,13 +176,23 @@ namespace PeekABoo.Characters.Players
             switch (movementState)
             {
                 case MovementState.Walking:
+                    
                     targetPosition = crouchingCameraPoint.localPosition;
                     movementState = MovementState.Crouching;
+
+                    defaultBodyCollider.enabled = false;
+                    crouchingBodyCollider.enabled = true;
+
                     break;
 
                 case MovementState.Crouching:
+
                     targetPosition = defaultCameraPoint.localPosition;
                     movementState = MovementState.Walking;
+
+                    defaultBodyCollider.enabled = true;
+                    crouchingBodyCollider.enabled = false;
+
                     break;
             }
 
