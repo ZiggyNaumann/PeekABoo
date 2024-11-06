@@ -3,7 +3,6 @@ using CardboardCore.Cameras.VirtualCameras;
 using CardboardCore.DI;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PeekABoo.Characters.Players
 {
@@ -28,6 +27,7 @@ namespace PeekABoo.Characters.Players
         [SerializeField] private float maxWalkSpeed = 2.5f;
         [SerializeField] private float maxCrouchSpeed = 1.5f;
         [SerializeField] private float maxSprintSpeed = 5f;
+        [SerializeField] private float maxExhaustedSpeed = 1f;
         [SerializeField] private float counterFriction = 0.1f;
 
         [Header("Crouch Transition Settings")]
@@ -45,6 +45,7 @@ namespace PeekABoo.Characters.Players
         [Inject] private VirtualCameraManager virtualCameraManager;
 
         private PlayerCharacterInput playerCharacterInput;
+        private PlayerCharacterStamina playerCharacterStamina;
 
         private Vector3 currentVelocity;
         private Vector3 previousVelocity;
@@ -63,6 +64,8 @@ namespace PeekABoo.Characters.Players
             playerCharacterInput = Owner.GetCharacterComponent<PlayerCharacterInput>();
             playerCharacterInput.CrouchEvent += OnCrouch;
             playerCharacterInput.SprintEvent += OnSprint;
+
+            playerCharacterStamina = Owner.GetCharacterComponent<PlayerCharacterStamina>();
 
             movementState = MovementState.Walking;
 
@@ -133,6 +136,8 @@ namespace PeekABoo.Characters.Players
                     maxMovementSpeed = maxSprintSpeed;
                     break;
             }
+
+            maxMovementSpeed = playerCharacterStamina.IsExhausted ? maxExhaustedSpeed : maxMovementSpeed;
 
             maxMovementSpeed = IsGrounded ? maxMovementSpeed : maxAirSpeed;
 
@@ -205,7 +210,12 @@ namespace PeekABoo.Characters.Players
         {
             if (performed)
             {
-                if (movementState == MovementState.Walking)
+                if (playerCharacterStamina.IsExhausted)
+                {
+                    return;
+                }
+
+                if (movementState == MovementState.Walking && playerCharacterStamina.BeginSprint())
                 {
                     movementState = MovementState.Sprinting;
                 }
@@ -215,6 +225,7 @@ namespace PeekABoo.Characters.Players
                 if (movementState == MovementState.Sprinting)
                 {
                     movementState = MovementState.Walking;
+                    playerCharacterStamina.EndSprint();
                 }
             }
         }

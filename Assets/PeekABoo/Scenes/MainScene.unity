@@ -9756,33 +9756,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
-    - target: {fileID: 3545868465954263187, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_ClearFlags
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545868465954263187, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_BackGroundColor.b
-      value: 0.46226418
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545868465954263187, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_BackGroundColor.g
-      value: 0.33567452
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545868465954263187, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_BackGroundColor.r
-      value: 0.2551175
-      objectReference: {fileID: 0}
-    - target: {fileID: 5086019562238822801, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_CameraType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5086019562238822801, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_VolumeLayerMask.m_Bits
-      value: 32
-      objectReference: {fileID: 0}
     - target: {fileID: 5867803263948020141, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7067661540133012498, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9822,14 +9798,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7067661540133012498, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7404021712765571358, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_text
-      value: Peek
-      objectReference: {fileID: 0}
-    - target: {fileID: 8022990976874852006, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8418864149129418183, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
