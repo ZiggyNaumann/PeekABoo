@@ -57,7 +57,8 @@ MonoBehaviour:
     fov: 60
     nearClipPlane: 0.3
     farClipPlane: 1000
-    modules: []
+    modules:
+    - {fileID: 0}
   myVirtualCameraManager: {fileID: 0}
 --- !u!1 &1040933488172273419
 GameObject:
@@ -69,6 +70,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2040785281287398494}
   - component: {fileID: 6244436997328350574}
+  - component: {fileID: 4006286728844396531}
+  - component: {fileID: 9063545644527968064}
+  - component: {fileID: 164261833804628460}
+  - component: {fileID: 4761761998196879507}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -122,6 +127,67 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &4006286728844396531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040933488172273419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c13fbc9947534735b07136deddb906d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firstPersonCamera: {fileID: 696746402704299416}
+--- !u!114 &9063545644527968064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040933488172273419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5e98067bcf42fe87e144cc0ef3ccdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lookSensitivity: 10
+--- !u!114 &164261833804628460
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040933488172273419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6566c8516c54b44937e34c53f7f1004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rigidbody: {fileID: 6244436997328350574}
+  playerInput: {fileID: 9063545644527968064}
+  accelerationStrength: 3000
+  maxSpeed: 5
+  counterFriction: 0.1
+  jumpForce: 5
+  isGroundedCheckOffset: 1
+  isGroundedCheckDistance: 1.1
+  jumpDirectionalForce: 20
+  maxAirSpeed: 5
+  airAccelerationStrength: 150
+--- !u!114 &4761761998196879507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040933488172273419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6101b34c0264637bd30a05540a465ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2017189051154650568
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,6 +397,7 @@ GameObject:
   - component: {fileID: 7800001207949167710}
   - component: {fileID: 4033833050967752039}
   - component: {fileID: 3701338100744695341}
+  - component: {fileID: 1330225261824823917}
   m_Layer: 0
   m_Name: GameplayCamera
   m_TagString: Untagged
@@ -428,7 +495,8 @@ MonoBehaviour:
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
-  m_Cameras: []
+  m_Cameras:
+  - {fileID: 0}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -456,3 +524,17 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &1330225261824823917
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8843443029673804711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d40fa55e24d4c42409ce1014968cbf67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCameraManager: {fileID: 0}
+  initialCameraId: FirstPerson
