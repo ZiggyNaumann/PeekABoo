@@ -51,7 +51,7 @@ namespace EPOOutline
         private static List<Outliner> outliners = new List<Outliner>();
 #endif
 
-        private static List<Outlinable> temporaryOutlinables = new List<Outlinable>(); 
+        private static List<Outlinable> temporaryOutlinables = new List<Outlinable>();
 
         private OutlineParameters parameters = new OutlineParameters();
 
@@ -118,7 +118,7 @@ namespace EPOOutline
                 throw new NotImplementedException();
             }
         }
-        
+
         public int PrimarySizeReference
         {
             get
@@ -392,12 +392,12 @@ namespace EPOOutline
 
         private void UpdateBuffer(Camera targetCamera, CommandBuffer buffer, bool removeOnly)
         {
-            targetCamera.RemoveCommandBuffer(CameraEvent.BeforeImageEffects, buffer);
-            targetCamera.RemoveCommandBuffer(CameraEvent.AfterForwardOpaque, buffer);
-            if (removeOnly)
-                return;
-
-            targetCamera.AddCommandBuffer(Event, buffer);
+            // targetCamera.RemoveCommandBuffer(CameraEvent.BeforeImageEffects, buffer);
+            // targetCamera.RemoveCommandBuffer(CameraEvent.AfterForwardOpaque, buffer);
+            // if (removeOnly)
+            //     return;
+            //
+            // targetCamera.AddCommandBuffer(Event, buffer);
         }
 
         private void OnPreRender()
