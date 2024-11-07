@@ -664,6 +664,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IntroScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 5071866485757906874, guid: c307de1c14ce085469712a0747b82388, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6086453688153770851, guid: c307de1c14ce085469712a0747b82388, type: 3}
       propertyPath: m_text
       value: Peek
