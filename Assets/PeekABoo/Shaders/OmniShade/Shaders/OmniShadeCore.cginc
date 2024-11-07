@@ -162,6 +162,7 @@ half _AmbientBrightness;
 half4 _ShadowColor;
 
 half _ZOffset;
+half _CutoutCutoff;
 CBUFFER_END
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -209,7 +210,7 @@ CBUFFER_END
 				float fogCoord : TEXCOORD10;
 			#endif
 		#endif
-		#if DIFFUSE && !DIFFUSE_PER_PIXEL && !FLAT && !(NORMAL_MAP || NORMAL_MAP2) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
+		#if DIFFUSE && (!DIFFUSE_PER_PIXEL && !USE_FORWARD_PLUS) && !FLAT && !(NORMAL_MAP || NORMAL_MAP2) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
 			half3 col_diffuse_add : TEXCOORD11;
 		#endif
 		#if CAMERA_FADE
@@ -217,9 +218,6 @@ CBUFFER_END
 		#endif
 		#if (SHADOWS_SCREEN || SHADOWS_SHADOWMASK || LIGHTMAP_SHADOW_MIXING) && SHADOWS_ENABLED
 			UNITY_SHADOW_COORDS(13)
-		#endif
-		#if USE_FORWARD_PLUS
-			float4 pos_clip : TEXCOORD14;
 		#endif
 		UNITY_VERTEX_INPUT_INSTANCE_ID
 		UNITY_VERTEX_OUTPUT_STEREO
@@ -262,7 +260,7 @@ CBUFFER_END
 				float fogCoord : TEXCOORD9;
 			#endif
 		#endif
-		#if DIFFUSE && !DIFFUSE_PER_PIXEL && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
+		#if DIFFUSE && (!DIFFUSE_PER_PIXEL && !USE_FORWARD_PLUS) && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
 			half3 col_diffuse_add : TEXCOORD10;
 		#endif
 		#if SPECULAR_HAIR
@@ -276,9 +274,6 @@ CBUFFER_END
 		#endif
 		#if (SHADOWS_SCREEN || SHADOWS_SHADOWMASK || LIGHTMAP_SHADOW_MIXING) && SHADOWS_ENABLED
 			UNITY_SHADOW_COORDS(14)
-		#endif
-		#if USE_FORWARD_PLUS
-			float4 pos_clip : TEXCOORD15;
 		#endif
 		UNITY_VERTEX_INPUT_INSTANCE_ID
 		UNITY_VERTEX_OUTPUT_STEREO
@@ -326,6 +321,7 @@ float3 PlantSway(appdata_full v) {
 }
 
 bool UVTileDiscard(float2 uv) {
+	uv /= 4.0;
 	return ((_UVTileV0U0 && uv.y < 0.25 && uv.x < 0.25) ||
 		(_UVTileV0U1 && uv.y < 0.25 && uv.x >= 0.25 && uv.x < 0.5) ||
 		(_UVTileV0U2 && uv.y < 0.25 && uv.x >= 0.5 && uv.x < 0.75) || 
@@ -602,9 +598,6 @@ v2f vert (appdata_full v) {
 		o.pos_world = TransformObjectToWorld(v.vertex.xyz);
 		v.vertex.xyz = PlantSway(v);
 	#endif
-	#if USE_FORWARD_PLUS
-		o.pos_clip = TransformWorldToHClip(o.pos_world);
-	#endif
 
 	// UV Tile discard
 	#if UVTILE
@@ -616,7 +609,7 @@ v2f vert (appdata_full v) {
 		else if (_UVTileDiscardUV == 4)
 			uv = v.texcoord3;
 		if (UVTileDiscard(uv))
-			v.vertex.xyz = 0;
+			v.vertex = asfloat(0x7fc00000);
 	#endif
 	
 	// Clip pos
@@ -648,13 +641,9 @@ v2f vert (appdata_full v) {
 		|| SPECULAR_HAIR
 			o.tan_world = float4(UnityObjectToWorldDir(v.tangent.xyz), v.tangent.w);
 	#endif
-	#if DIFFUSE && !DIFFUSE_PER_PIXEL && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
+	#if DIFFUSE && (!DIFFUSE_PER_PIXEL && !USE_FORWARD_PLUS) && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP) && (!LIGHTMAP_ON || MIXED_LIGHTING) && (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
 		uint meshRenderingLayers = GetMeshRenderingLightLayerCustom();
-		float4 pos_clip = 0;
-		#if USE_FORWARD_PLUS
-			pos_clip = o.pos_clip;
-		#endif
-		o.col_diffuse_add = AdditionalLights(o.pos_world, o.nor_world, pos_clip, _DiffuseWrap, _DiffuseBrightness, _DiffuseContrast, meshRenderingLayers);
+		o.col_diffuse_add = AdditionalLightsVert(o.pos_world, o.nor_world, _DiffuseWrap, _DiffuseBrightness, _DiffuseContrast, meshRenderingLayers, _ShadowColor.rgb);
 	#endif
 	#if SPECULAR && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP) && !(DIRLIGHTMAP_COMBINED && LIGHTMAP_ON) && !FLAT && !SPECULAR_HAIR
 		o.specReflectDir = normalize(reflect(-_WorldSpaceLightPos0.rgb, o.nor_world));
@@ -1041,14 +1030,10 @@ half4 frag (v2f i) : COLOR {
 			}
 		#endif
 		#if (VERTEXLIGHT_ON || _ADDITIONAL_LIGHTS || MIXED_LIGHTING)
-			#if !DIFFUSE_PER_PIXEL && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP)
+			#if (!DIFFUSE_PER_PIXEL && !USE_FORWARD_PLUS) && !FLAT && !(NORMAL_MAP || NORMAL_MAP2 || NORMAL_MAP_TOP)
 				col_diffuse += i.col_diffuse_add;
 			#else
-				float4 pos_clip = 0;
-				#if USE_FORWARD_PLUS
-					pos_clip = i.pos_clip;
-				#endif
-				col_diffuse += AdditionalLights(i.pos_world, adjNor_world, pos_clip, _DiffuseWrap, _DiffuseBrightness, _DiffuseContrast, meshRenderingLayers);
+				col_diffuse += AdditionalLightsFrag(i.pos_world, adjNor_world, i.pos, _DiffuseWrap, _DiffuseBrightness, _DiffuseContrast, meshRenderingLayers, _ShadowColor.rgb);
 			#endif
 		#endif
 		#if DETAIL && DETAIL_LIGHTING
@@ -1231,7 +1216,7 @@ half4 frag (v2f i) : COLOR {
 	#endif
 
 	#if CUTOUT
-		if (col_base.a < 0.5)
+		if (col_base.a < _CutoutCutoff)
 			discard;
 		else
 			col_base.a = 1;

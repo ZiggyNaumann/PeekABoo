@@ -162,7 +162,7 @@ public class OmniShadeGUI : ShaderGUI {
 		// MatCap Static Rotation default angle points to camera
 		if (mat.IsKeywordEnabled("MATCAP_STATIC") && mat.HasProperty("_MatCapRot") && 
 			mat.GetVector("_MatCapRot") == Vector4.zero) {
-			var cam = GameObject.FindObjectOfType<Camera>();
+			var cam = GameObject.FindFirstObjectByType<Camera>();
 			if (cam != null) {
 				var matCapRot = -cam.transform.rotation.eulerAngles * Mathf.PI / 180;
 				mat.SetVector("_MatCapRot", matCapRot);

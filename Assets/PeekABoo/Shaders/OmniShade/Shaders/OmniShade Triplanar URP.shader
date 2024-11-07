@@ -11,6 +11,7 @@ Shader "OmniShade/Triplanar URP" {
 		_Contrast ("Contrast", range(0, 25)) = 1
 		_Saturation ("Saturation", range(0, 2)) = 1
 		[Toggle] _IgnoreMainTexAlpha ("Ignore Main Texture Alpha", Float) = 0
+		[Toggle(TRIPLANAR_BASE_UV)] _BaseUV ("Use UV For Sides", Float) = 0
         _TriplanarSharpness ("Triplanar Blend Sharpness", range(0.01, 30)) = 1
 		[Toggle(TRIPLANAR_LOCAL)] _TriplanarLocal ("Triplanar Use Local Space", Float) = 0
 
@@ -181,7 +182,7 @@ Shader "OmniShade/Triplanar URP" {
 		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", Float) = 4 			// LessEqual
 		_ZOffset ("Depth Offset", range(-5, 5)) = 0
 		[Toggle(CUTOUT)] _Cutout ("Cutout Transparency", Float) = 0
-		[Hidden] _Cutoff ("Cutoff", range(0, 1)) = 0.5                                      // Defined for baking
+		_CutoutCutoff ("Cutoff", range(0, 1)) = 0.5                                    
 
 		[Header(Blending)]
 		[Enum(UnityEngine.Rendering.BlendMode)] _SourceBlend ("Source Blend", Float) = 1 	// One
@@ -222,11 +223,7 @@ Shader "OmniShade/Triplanar URP" {
             #define TRIPLANAR 1
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #if UNITY_VERSION >= 202203
-                #if UNITY_VERSION < 202301
-                    #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #else
-                    #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #endif
+                #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
             #endif
             #include "OmniShadeCore.cginc"
             #pragma target 3.5
@@ -493,11 +490,7 @@ Shader "OmniShade/Triplanar URP" {
             #define FALLBACK_PASS 1
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #if UNITY_VERSION >= 202203
-                #if UNITY_VERSION < 202301
-                    #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #else
-                    #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #endif
+                #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
             #endif
             #include "OmniShadeCore.cginc"
             #pragma vertex vert
@@ -541,4 +534,5 @@ Shader "OmniShade/Triplanar URP" {
     }
 
 	CustomEditor "OmniShadeGUI"
+    // float4 color : COLOR;  This line is for Polybrush support
 }

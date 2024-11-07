@@ -167,7 +167,7 @@ Shader "OmniShade/Standard" {
 
         [HeaderGroup(UV Tile Discard)]
 		[Toggle(UVTILE)] _UVTile ("Enable UV Tile Discard", Float) = 0
-		[Enum(UV1, 1, UV2, 2, UV3, 3, UV4, 4)] _UVTileDiscardUV ("Discard UV", Float) = 1
+		[Enum(UV0, 1, UV1, 2, UV2, 3, UV3, 4)] _UVTileDiscardUV ("Discard UV", Float) = 1
         [Toggle] _UVTileV3U0 ("v = 3", Float) = 0
         [Toggle] _UVTileV3U1 ("", Float) = 0
         [Toggle] _UVTileV3U2 ("", Float) = 0
@@ -202,7 +202,7 @@ Shader "OmniShade/Standard" {
 		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", Float) = 4 			// LessEqual
 		_ZOffset ("Depth Offset", range(-5, 5)) = 0
 		[Toggle(CUTOUT)] _Cutout ("Cutout Transparency", Float) = 0
-		[Hidden] _Cutoff ("Cutoff", range(0, 1)) = 0.5                                      // Defined for baking
+		_CutoutCutoff ("Cutoff", range(0, 1)) = 0.5                              
 
 		[Header(Blending)]
 		[Enum(UnityEngine.Rendering.BlendMode)] _SourceBlend ("Source Blend", Float) = 1 	// One
@@ -488,4 +488,5 @@ Shader "OmniShade/Standard" {
 
 	Fallback "Diffuse"
 	CustomEditor "OmniShadeGUI"
+    // float4 color : COLOR;  This line is for Polybrush support
 }

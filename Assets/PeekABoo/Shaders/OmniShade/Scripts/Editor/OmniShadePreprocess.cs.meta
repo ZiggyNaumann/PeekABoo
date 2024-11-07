@@ -9,3 +9,10 @@ MonoImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213594
+  packageName: OmniShade Pro - Mobile Optimized Shader
+  packageVersion: 1.8.5
+  assetPath: Assets/PeekABoo/Shaders/OmniShade/Scripts/Editor/OmniShadePreprocess.cs
+  uploadId: 691962

@@ -2,7 +2,7 @@
     "name": "OmniShade.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:ec0e4a68124564aee8f5cbc26a40ca15"
+        "GUID:e9de827a4aa124dc5932ae83b40f91fc"
     ],
     "includePlatforms": [
         "Editor"

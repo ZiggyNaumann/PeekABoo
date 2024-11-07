@@ -168,7 +168,7 @@ Shader "OmniShade/Standard URP" {
 
         [HeaderGroup(UV Tile Discard)]
 		[Toggle(UVTILE)] _UVTile ("Enable UV Tile Discard", Float) = 0
-		[Enum(UV1, 1, UV2, 2, UV3, 3, UV4, 4)] _UVTileDiscardUV ("Discard UV", Float) = 1
+		[Enum(UV0, 1, UV1, 2, UV2, 3, UV3, 4)] _UVTileDiscardUV ("Discard UV", Float) = 1
         [Toggle] _UVTileV3U0 ("v = 3", Float) = 0
         [Toggle] _UVTileV3U1 ("", Float) = 0
         [Toggle] _UVTileV3U2 ("", Float) = 0
@@ -203,7 +203,7 @@ Shader "OmniShade/Standard URP" {
 		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", Float) = 4 			// LessEqual
 		_ZOffset ("Depth Offset", range(-5, 5)) = 0
 		[Toggle(CUTOUT)] _Cutout ("Cutout Transparency", Float) = 0
-		[Hidden] _Cutoff ("Cutoff", range(0, 1)) = 0.5                                      // Defined for baking
+		_CutoutCutoff ("Cutoff", range(0, 1)) = 0.5                                    
 
 		[Header(Blending)]
 		[Enum(UnityEngine.Rendering.BlendMode)] _SourceBlend ("Source Blend", Float) = 1 	// One
@@ -243,13 +243,9 @@ Shader "OmniShade/Standard URP" {
             #define URP 1
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #if UNITY_VERSION >= 202203
-                #if UNITY_VERSION < 202301
-                    #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #else
-                    #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #endif
+                #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
             #endif
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -350,7 +346,7 @@ Shader "OmniShade/Standard URP" {
             #define URP 1
             #define OUTLINE_PASS 1
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -384,7 +380,7 @@ Shader "OmniShade/Standard URP" {
             #define SHADOW_CASTER 1
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/ShadowCasterPass.hlsl"
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -412,7 +408,7 @@ Shader "OmniShade/Standard URP" {
             #define URP 1
             #define DEPTH 1
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -440,7 +436,7 @@ Shader "OmniShade/Standard URP" {
             #define URP 1
             #define DEPTH_NORMALS 1
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -469,7 +465,7 @@ Shader "OmniShade/Standard URP" {
             #define META 1
             #include "Packages/com.unity.render-pipelines.universal/Shaders/LitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/MetaInput.hlsl"
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma target 3.5
             #pragma vertex vert
             #pragma fragment frag
@@ -523,13 +519,9 @@ Shader "OmniShade/Standard URP" {
             #define FALLBACK_PASS 1
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
             #if UNITY_VERSION >= 202203
-                #if UNITY_VERSION < 202301
-                    #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #else
-                    #include_with_pragmas "Packages/com.unity.render-pipelines.core/ShaderLibrary/FoveatedRenderingKeywords.hlsl"
-                #endif
+                #include_with_pragmas "ShaderLibrary/FoveatedRenderingKeywords.hlsl"
             #endif
-            #include "./OmniShadeCore.cginc"
+            #include "OmniShadeCore.cginc"
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_fog
@@ -569,4 +561,5 @@ Shader "OmniShade/Standard URP" {
     }
 
 	CustomEditor "OmniShadeGUI"
+    // float4 color : COLOR;  This line is for Polybrush support
 }

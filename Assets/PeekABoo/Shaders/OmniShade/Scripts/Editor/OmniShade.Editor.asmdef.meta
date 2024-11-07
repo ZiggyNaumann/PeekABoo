@@ -1,7 +1,14 @@
 fileFormatVersion: 2
-guid: 0c998c398b0044ed794837838b8cb42c
+guid: a5e550829f8084fb6a2ed5cb130e43e0
 AssemblyDefinitionImporter:
   externalObjects: {}
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 213594
+  packageName: OmniShade Pro - Mobile Optimized Shader
+  packageVersion: 1.8.5
+  assetPath: Assets/PeekABoo/Shaders/OmniShade/Scripts/Editor/OmniShade.Editor.asmdef
+  uploadId: 691962

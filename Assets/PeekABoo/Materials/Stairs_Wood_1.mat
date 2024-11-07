@@ -20,7 +20,6 @@ Material:
   - NORMAL_MAP
   - OUTLINE_PASS_DISABLED
   - SHADOWS_ENABLED
-  - SPECULAR
   - _DETAILBLEND_MULTIPLY
   - _DETAILUV_UV1
   - _HEIGHTCOLORSBLEND_ALPHA_BLEND
@@ -303,7 +302,7 @@ Material:
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SourceBlend: 1
-    - _Specular: 1
+    - _Specular: 0
     - _SpecularBrightness: 1
     - _SpecularHair: 0
     - _SpecularHighlights: 1
@@ -374,6 +373,7 @@ Material:
     - _SpecularColor: {r: 0.24528301, g: 0.03355287, b: 0.03355287, a: 1}
     - _TopColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &2679353677880458119
 MonoBehaviour:
   m_ObjectHideFlags: 11

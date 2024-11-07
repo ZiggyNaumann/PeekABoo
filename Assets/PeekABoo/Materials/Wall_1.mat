@@ -18,6 +18,7 @@ Material:
   - DIFFUSE_PER_PIXEL
   - FOG
   - MATCAP_PERSPECTIVE
+  - MIXED_LIGHTING
   - NORMAL_MAP
   - OUTLINE_PASS_DISABLED
   - SHADOWS_ENABLED
@@ -257,7 +258,7 @@ Material:
     - _MatCapPerspective: 1
     - _MatCapStatic: 0
     - _Metallic: 0
-    - _MixedLighting: 0
+    - _MixedLighting: 1
     - _NormalStrength: 0.5
     - _NormalUV: 0
     - _OcclusionStrength: 1
@@ -374,6 +375,7 @@ Material:
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _TopColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &2679353677880458119
 MonoBehaviour:
   m_ObjectHideFlags: 11

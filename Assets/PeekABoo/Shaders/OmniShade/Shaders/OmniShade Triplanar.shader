@@ -181,7 +181,7 @@ Shader "OmniShade/Triplanar" {
 		[Enum(UnityEngine.Rendering.CompareFunction)] _ZTest ("Z Test", Float) = 4 			// LessEqual
 		_ZOffset ("Depth Offset", range(-5, 5)) = 0
 		[Toggle(CUTOUT)] _Cutout ("Cutout Transparency", Float) = 0
-		[Hidden] _Cutoff ("Cutoff", range(0, 1)) = 0.5                                      // Defined for baking
+		_CutoutCutoff ("Cutoff", range(0, 1)) = 0.5                                   
 
 		[Header(Blending)]
 		[Enum(UnityEngine.Rendering.BlendMode)] _SourceBlend ("Source Blend", Float) = 1 	// One
@@ -465,4 +465,5 @@ Shader "OmniShade/Triplanar" {
 
 	Fallback "Diffuse"
 	CustomEditor "OmniShadeGUI"
+    // float4 color : COLOR;  This line is for Polybrush support
 }
