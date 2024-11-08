@@ -1,7 +1,7 @@
 ﻿using CardboardCore.DI;
 using CardboardCore.Utilities;
 
-namespace PeekABook.Input
+namespace PeekABoo.Input
 {
     [Injectable]
     public class InputManager

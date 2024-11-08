@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PeekABook.Input
+namespace PeekABoo.Input
 {
     public partial class @PeekABooActions: IInputActionCollection2, IDisposable
     {

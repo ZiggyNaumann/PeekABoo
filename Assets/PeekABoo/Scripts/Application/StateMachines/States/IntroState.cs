@@ -3,7 +3,7 @@ using CardboardCore.StateMachines;
 using CardboardCore.UI;
 using PeekABoo.Audio;
 using PeekABoo.UI.Screens;
-using PeekABook.Input;
+using PeekABoo.Input;
 using UnityEngine.InputSystem;
 
 namespace PeekABoo.Application.StateMachines.States

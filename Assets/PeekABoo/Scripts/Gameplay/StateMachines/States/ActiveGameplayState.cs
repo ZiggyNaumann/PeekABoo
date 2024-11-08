@@ -2,7 +2,7 @@
 using CardboardCore.StateMachines;
 using CardboardCore.UI;
 using PeekABoo.UI.Screens;
-using PeekABook.Input;
+using PeekABoo.Input;
 using UnityEngine.InputSystem;
 
 namespace PeekABoo.Gameplay.StateMachines.States
