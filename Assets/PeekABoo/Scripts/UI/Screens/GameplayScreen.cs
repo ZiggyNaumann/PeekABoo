@@ -2,6 +2,7 @@
 using CardboardCore.UI;
 using DG.Tweening;
 using PeekABoo.UI.Screens.Gameplay;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ namespace PeekABoo.UI.Screens
 
         [SerializeField] private InteractPromptElement interactPromptElement;
 
+        [SerializeField] private TextMeshProUGUI cluesText;
+
         private float staminaBarWidth;
 
         private Tween fadeOutTween;
@@ -23,6 +26,7 @@ namespace PeekABoo.UI.Screens
         {
             staminaBarWidth = staminaBar.rectTransform.sizeDelta.x;
             staminaBar.DOFade(0, 0);
+            cluesText.DOFade(0, 0);
         }
 
         protected override void OnHide()
@@ -76,6 +80,11 @@ namespace PeekABoo.UI.Screens
         public void HideInteractPrompt()
         {
             interactPromptElement.Hide();
+        }
+
+        public void ShowCluesText()
+        {
+            cluesText.DOFade(1f, 0.5f);
         }
     }
 }

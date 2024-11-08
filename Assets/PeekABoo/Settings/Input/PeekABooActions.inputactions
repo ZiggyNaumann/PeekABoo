@@ -85,6 +85,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ShowClues",
+                    "type": "Button",
+                    "id": "c8649464-dd6c-4e98-a0e0-7fdc30c88484",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -492,6 +501,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe43213e-99db-4852-b4db-2b9e6878cede",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ShowClues",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1058,6 +1078,34 @@
                     "processors": "",
                     "groups": "",
                     "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Clues",
+            "id": "59c465c3-e275-4fa9-b1ba-b267e651ad03",
+            "actions": [
+                {
+                    "name": "CloseClues",
+                    "type": "Button",
+                    "id": "8ee6becb-416c-43cf-a68f-efbc0ba9176a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "06ad6856-5b90-4dbe-900b-7ee1c3788c18",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CloseClues",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

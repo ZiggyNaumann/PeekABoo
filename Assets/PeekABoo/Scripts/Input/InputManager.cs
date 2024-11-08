@@ -11,6 +11,7 @@ namespace PeekABook.Input
         public PeekABooActions.PlayerActions Player => spaceLifeActions.Player;
         public PeekABooActions.UIActions UI => spaceLifeActions.UI;
         public PeekABooActions.IntroActions Intro => spaceLifeActions.Intro;
+        public PeekABooActions.CluesActions Clues => spaceLifeActions.Clues;
 
         public InputManager()
         {
@@ -20,6 +21,7 @@ namespace PeekABook.Input
             DisablePlayer();
             DisableUI();
             DisableIntro();
+            DisableClues();
         }
 
         ~InputManager()
@@ -74,6 +76,18 @@ namespace PeekABook.Input
         {
             Log.Write("Disabling Intro Input...");
             Intro.Disable();
+        }
+
+        public void EnableClues()
+        {
+            Log.Write("Enabling Clues Input...");
+            Clues.Enable();
+        }
+
+        public void DisableClues()
+        {
+            Log.Write("Disabling Clues Input...");
+            Clues.Disable();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CardboardCore.DI;
 using CardboardCore.UI;
+using CardboardCore.Utilities;
 using PeekABoo.Interacting;
 using PeekABoo.UI.Screens;
 using UnityEngine;
@@ -119,10 +120,14 @@ namespace PeekABoo.Characters.Players
 
         private void OnTargetedInteractableDisableInteraction()
         {
+            if (targetedInteractable == null)
+            {
+                Log.Warn("Targeted interactable is null.");
+                return;
+            }
+
             targetedInteractable.DisableInteractionEvent -= OnTargetedInteractableDisableInteraction;
-
             targetedInteractable.HideHighlight();
-
             targetedInteractable = null;
 
             gameplayScreen.HideInteractPrompt();
