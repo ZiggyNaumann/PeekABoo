@@ -17,14 +17,14 @@ namespace PeekABoo.UI.Screens
 
         [SerializeField] private TextMeshProUGUI cluesText;
 
-        private float staminaBarWidth;
+        private float staminaBarWidth = 900;
 
         private Tween fadeOutTween;
         private Tween fadeInTween;
 
         protected override void OnShow()
         {
-            staminaBarWidth = staminaBar.rectTransform.sizeDelta.x;
+            // staminaBarWidth = staminaBar.rectTransform.sizeDelta.x;
             staminaBar.DOFade(0, 0);
             cluesText.DOFade(0, 0);
         }
