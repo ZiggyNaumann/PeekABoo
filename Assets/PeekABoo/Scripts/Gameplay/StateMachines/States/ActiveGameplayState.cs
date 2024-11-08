@@ -8,7 +8,7 @@ using PeekABook.Input;
 
 namespace PeekABoo.Gameplay.StateMachines.States
 {
-    public class EnableControlsState : State
+    public class EnableGameplayInputState : State
     {
         [Inject] private InputManager inputManager;
         [Inject] private UIManager uiManager;

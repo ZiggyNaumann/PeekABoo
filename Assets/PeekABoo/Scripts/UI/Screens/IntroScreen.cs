@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
 using CardboardCore.UI;
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PeekABoo.UI.Screens
 {
     public class IntroScreen : UIScreen
     {
+        [SerializeField] private Image backPanel;
         [SerializeField] private TextMeshProUGUI introText;
+        [SerializeField] private float timeBetweenWords = 2f;
+        [SerializeField] private float fullLogoTime = 3f;
         [SerializeField] private string[] words;
 
         public event Action IntroCompleteEvent;
@@ -30,15 +33,16 @@ namespace PeekABoo.UI.Screens
             for (int i = 0; i < words.Length; i++)
             {
                 introText.text = words[i];
-                // TODO: Play SFX
-                yield return new WaitForSeconds(2f);
+
+                yield return new WaitForSeconds(timeBetweenWords);
             }
 
-            Sequence sequence = DOTween.Sequence();
+            introText.gameObject.SetActive(false);
+            backPanel.color = Color.black;
 
-            sequence.Append(introText.transform.DOScale(2f, 4f));
-            sequence.Insert(2f, introText.DOFade(0f, 1f));
-            sequence.OnComplete(() => IntroCompleteEvent?.Invoke());
+            yield return new WaitForSeconds(fullLogoTime);
+
+            IntroCompleteEvent?.Invoke();
         }
     }
 }
