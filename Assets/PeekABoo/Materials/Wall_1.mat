@@ -15,10 +15,8 @@ Material:
   - AMBIENT
   - ANIME_SOFT
   - DIFFUSE
-  - DIFFUSE_PER_PIXEL
   - FOG
   - MATCAP_PERSPECTIVE
-  - MIXED_LIGHTING
   - NORMAL_MAP
   - OUTLINE_PASS_DISABLED
   - SHADOWS_ENABLED
@@ -129,7 +127,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 34db6dc5b52d119498a3638c926a8ee5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7fc2dfef4f4ab174a8ed130203438faf, type: 3}
         m_Scale: {x: 8, y: 8}
         m_Offset: {x: 0, y: 0}
     - _NormalTex2:
@@ -195,6 +193,7 @@ Material:
     - _AnimeSoftness: 0.01
     - _AnimeThreshold1: 0.45
     - _AnimeThreshold2: 0.85
+    - _BaseUV: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BlendOp: 0
@@ -208,6 +207,7 @@ Material:
     - _Cull: 0
     - _Cutoff: 0.5
     - _Cutout: 0
+    - _CutoutCutoff: 0.5
     - _DestBlend: 0
     - _DetailAlbedoMapScale: 1
     - _DetailBlend: 2
@@ -220,7 +220,7 @@ Material:
     - _Diffuse: 1
     - _DiffuseBrightness: 1
     - _DiffuseContrast: 1
-    - _DiffusePerPixel: 1
+    - _DiffusePerPixel: 0
     - _DiffuseWrap: 0
     - _DstBlend: 0
     - _DstBlendAlpha: 0
@@ -258,8 +258,8 @@ Material:
     - _MatCapPerspective: 1
     - _MatCapStatic: 0
     - _Metallic: 0
-    - _MixedLighting: 1
-    - _NormalStrength: 0.5
+    - _MixedLighting: 0
+    - _NormalStrength: 0.4
     - _NormalUV: 0
     - _OcclusionStrength: 1
     - _OptFallback: 0
