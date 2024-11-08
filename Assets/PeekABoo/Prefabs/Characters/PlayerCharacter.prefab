@@ -75,6 +75,7 @@ GameObject:
   - component: {fileID: 164261833804628460}
   - component: {fileID: 4761761998196879507}
   - component: {fileID: 472189443309167425}
+  - component: {fileID: 49613141475730072}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -214,6 +215,20 @@ MonoBehaviour:
   staminaRecoveryRate: 0.4
   sprintStaminaCost: 0.2
   durationBeforeRecovery: 2
+--- !u!114 &49613141475730072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1040933488172273419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65ca5008411c4cbfb3b7421df8d0127a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spherecastRadius: 0.1
+  spherecastDistance: 1.25
 --- !u!1 &1990976081610872574
 GameObject:
   m_ObjectHideFlags: 0
@@ -652,7 +667,7 @@ Camera:
   m_HDR: 1
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
+  m_ForceIntoRT: 1
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022

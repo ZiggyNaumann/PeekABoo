@@ -19,6 +19,7 @@ namespace PeekABoo.Characters.Players
 
         public event Action CrouchEvent;
         public event Action<bool> SprintEvent;
+        public event Action InteractEvent;
 
         protected override void OnInjected()
         {
@@ -35,6 +36,7 @@ namespace PeekABoo.Characters.Players
             inputManager.Player.Sprint.performed += OnSprintPerformed;
             inputManager.Player.Sprint.canceled += OnSprintPerformed;
 
+            inputManager.Player.Interact.performed += OnInteractPerformed;
         }
 
         protected override void OnReleased()
@@ -49,6 +51,8 @@ namespace PeekABoo.Characters.Players
 
             inputManager.Player.Sprint.performed -= OnSprintPerformed;
             inputManager.Player.Sprint.canceled -= OnSprintPerformed;
+
+            inputManager.Player.Interact.performed -= OnInteractPerformed;
 
             base.OnReleased();
         }
@@ -84,6 +88,11 @@ namespace PeekABoo.Characters.Players
         private void OnSprintPerformed(InputAction.CallbackContext obj)
         {
             SprintEvent?.Invoke(obj.performed);
+        }
+
+        private void OnInteractPerformed(InputAction.CallbackContext obj)
+        {
+            InteractEvent?.Invoke();
         }
     }
 }

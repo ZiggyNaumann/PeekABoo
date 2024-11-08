@@ -2347,15 +2347,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5805400714637054912, guid: 04f0a709b5a281949bc969b81c7bb647, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.868228
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5805400714637054912, guid: 04f0a709b5a281949bc969b81c7bb647, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.2496958
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5805400714637054912, guid: 04f0a709b5a281949bc969b81c7bb647, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.0048373
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5805400714637054912, guid: 04f0a709b5a281949bc969b81c7bb647, type: 3}
       propertyPath: m_LocalRotation.w
@@ -5632,10 +5632,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
-    - target: {fileID: 5867803263948020141, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7067661540133012498, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5674,10 +5670,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7067661540133012498, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8418864149129418183, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

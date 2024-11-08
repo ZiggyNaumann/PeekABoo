@@ -1,6 +1,7 @@
 ﻿using System;
 using CardboardCore.UI;
 using DG.Tweening;
+using PeekABoo.UI.Screens.Gameplay;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,8 @@ namespace PeekABoo.UI.Screens
     {
         [SerializeField] private Image backPanel;
         [SerializeField] private Image staminaBar;
+
+        [SerializeField] private InteractPromptElement interactPromptElement;
 
         private float staminaBarWidth;
 
@@ -63,6 +66,16 @@ namespace PeekABoo.UI.Screens
         public void HideExhaustedState()
         {
             staminaBar.color = Color.white;
+        }
+
+        public void ShowInteractPrompt(Transform interactableTransform)
+        {
+            interactPromptElement.Show(interactableTransform);
+        }
+
+        public void HideInteractPrompt()
+        {
+            interactPromptElement.Hide();
         }
     }
 }
