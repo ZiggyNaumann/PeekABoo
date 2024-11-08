@@ -7,9 +7,12 @@ namespace PeekABoo.Gameplay.StateMachines
     {
         public GameplayStateMachine(bool enableDebugging) : base(enableDebugging)
         {
-            SetInitialState<FadeInState>();
+            SetInitialState<SpawnCluesState>();
 
-            AddStaticTransition<FadeInState, EnableControlsState>();
+            AddStaticTransition<SpawnCluesState, FadeInState>();
+            AddStaticTransition<FadeInState, ActiveGameplayState>();
+            AddStaticTransition<ActiveGameplayState, InspectCluesState>();
+            AddStaticTransition<InspectCluesState, ActiveGameplayState>();
         }
     }
 }

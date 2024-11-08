@@ -109,6 +109,15 @@ namespace PeekABook.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowClues"",
+                    ""type"": ""Button"",
+                    ""id"": ""c8649464-dd6c-4e98-a0e0-7fdc30c88484"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -516,6 +525,17 @@ namespace PeekABook.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe43213e-99db-4852-b4db-2b9e6878cede"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowClues"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1086,6 +1106,34 @@ namespace PeekABook.Input
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Clues"",
+            ""id"": ""59c465c3-e275-4fa9-b1ba-b267e651ad03"",
+            ""actions"": [
+                {
+                    ""name"": ""CloseClues"",
+                    ""type"": ""Button"",
+                    ""id"": ""8ee6becb-416c-43cf-a68f-efbc0ba9176a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""06ad6856-5b90-4dbe-900b-7ee1c3788c18"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CloseClues"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1162,6 +1210,7 @@ namespace PeekABook.Input
             m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
             m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+            m_Player_ShowClues = m_Player.FindAction("ShowClues", throwIfNotFound: true);
             // UI
             m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
             m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1177,6 +1226,9 @@ namespace PeekABook.Input
             // Intro
             m_Intro = asset.FindActionMap("Intro", throwIfNotFound: true);
             m_Intro_Skip = m_Intro.FindAction("Skip", throwIfNotFound: true);
+            // Clues
+            m_Clues = asset.FindActionMap("Clues", throwIfNotFound: true);
+            m_Clues_CloseClues = m_Clues.FindAction("CloseClues", throwIfNotFound: true);
         }
 
         ~@PeekABooActions()
@@ -1184,6 +1236,7 @@ namespace PeekABook.Input
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, PeekABooActions.Player.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_UI.enabled, "This will cause a leak and performance issues, PeekABooActions.UI.Disable() has not been called.");
             UnityEngine.Debug.Assert(!m_Intro.enabled, "This will cause a leak and performance issues, PeekABooActions.Intro.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_Clues.enabled, "This will cause a leak and performance issues, PeekABooActions.Clues.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -1254,6 +1307,7 @@ namespace PeekABook.Input
         private readonly InputAction m_Player_Previous;
         private readonly InputAction m_Player_Next;
         private readonly InputAction m_Player_Sprint;
+        private readonly InputAction m_Player_ShowClues;
         public struct PlayerActions
         {
             private @PeekABooActions m_Wrapper;
@@ -1267,6 +1321,7 @@ namespace PeekABook.Input
             public InputAction @Previous => m_Wrapper.m_Player_Previous;
             public InputAction @Next => m_Wrapper.m_Player_Next;
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+            public InputAction @ShowClues => m_Wrapper.m_Player_ShowClues;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1303,6 +1358,9 @@ namespace PeekABook.Input
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @ShowClues.started += instance.OnShowClues;
+                @ShowClues.performed += instance.OnShowClues;
+                @ShowClues.canceled += instance.OnShowClues;
             }
 
             private void UnregisterCallbacks(IPlayerActions instance)
@@ -1334,6 +1392,9 @@ namespace PeekABook.Input
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
+                @ShowClues.started -= instance.OnShowClues;
+                @ShowClues.performed -= instance.OnShowClues;
+                @ShowClues.canceled -= instance.OnShowClues;
             }
 
             public void RemoveCallbacks(IPlayerActions instance)
@@ -1515,6 +1576,52 @@ namespace PeekABook.Input
             }
         }
         public IntroActions @Intro => new IntroActions(this);
+
+        // Clues
+        private readonly InputActionMap m_Clues;
+        private List<ICluesActions> m_CluesActionsCallbackInterfaces = new List<ICluesActions>();
+        private readonly InputAction m_Clues_CloseClues;
+        public struct CluesActions
+        {
+            private @PeekABooActions m_Wrapper;
+            public CluesActions(@PeekABooActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseClues => m_Wrapper.m_Clues_CloseClues;
+            public InputActionMap Get() { return m_Wrapper.m_Clues; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(CluesActions set) { return set.Get(); }
+            public void AddCallbacks(ICluesActions instance)
+            {
+                if (instance == null || m_Wrapper.m_CluesActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_CluesActionsCallbackInterfaces.Add(instance);
+                @CloseClues.started += instance.OnCloseClues;
+                @CloseClues.performed += instance.OnCloseClues;
+                @CloseClues.canceled += instance.OnCloseClues;
+            }
+
+            private void UnregisterCallbacks(ICluesActions instance)
+            {
+                @CloseClues.started -= instance.OnCloseClues;
+                @CloseClues.performed -= instance.OnCloseClues;
+                @CloseClues.canceled -= instance.OnCloseClues;
+            }
+
+            public void RemoveCallbacks(ICluesActions instance)
+            {
+                if (m_Wrapper.m_CluesActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ICluesActions instance)
+            {
+                foreach (var item in m_Wrapper.m_CluesActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_CluesActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public CluesActions @Clues => new CluesActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1571,6 +1678,7 @@ namespace PeekABook.Input
             void OnPrevious(InputAction.CallbackContext context);
             void OnNext(InputAction.CallbackContext context);
             void OnSprint(InputAction.CallbackContext context);
+            void OnShowClues(InputAction.CallbackContext context);
         }
         public interface IUIActions
         {
@@ -1588,6 +1696,10 @@ namespace PeekABook.Input
         public interface IIntroActions
         {
             void OnSkip(InputAction.CallbackContext context);
+        }
+        public interface ICluesActions
+        {
+            void OnCloseClues(InputAction.CallbackContext context);
         }
     }
 }
