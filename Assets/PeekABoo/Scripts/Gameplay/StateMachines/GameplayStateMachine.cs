@@ -7,9 +7,11 @@ namespace PeekABoo.Gameplay.StateMachines
     {
         public GameplayStateMachine(bool enableDebugging) : base(enableDebugging)
         {
-            SetInitialState<SpawnCluesState>();
+            SetInitialState<SpawnLevelState>();
 
-            AddStaticTransition<SpawnCluesState, FadeInState>();
+            AddStaticTransition<SpawnLevelState, SpawnCluesState>();
+            AddStaticTransition<SpawnCluesState, TeleportPlayerToLevelState>();
+            AddStaticTransition<TeleportPlayerToLevelState, FadeInState>();
             AddStaticTransition<FadeInState, ActiveGameplayState>();
             AddStaticTransition<ActiveGameplayState, InspectCluesState>();
             AddStaticTransition<InspectCluesState, ActiveGameplayState>();

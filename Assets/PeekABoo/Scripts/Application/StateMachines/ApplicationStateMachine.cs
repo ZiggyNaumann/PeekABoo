@@ -10,9 +10,7 @@ namespace PeekABoo.Application.StateMachines
             SetInitialState<BootState>();
 
             AddStaticTransition<BootState, IntroState>();
-            AddStaticTransition<IntroState, LoadLevelState>();
-            AddStaticTransition<LoadLevelState, LoadPlayerCharacterState>();
-            AddStaticTransition<LoadPlayerCharacterState, GameplayState>();
+            AddStaticTransition<IntroState, GameplayState>();
         }
     }
 }

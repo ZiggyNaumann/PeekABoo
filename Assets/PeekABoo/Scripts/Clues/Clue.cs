@@ -6,6 +6,8 @@ namespace PeekABoo.Clues
     {
         [Inject] private ClueRegistry clueRegistry;
 
+        private ClueConfig config;
+
         protected override void OnInjected()
         {
             clueRegistry.RegisterClue(this);
@@ -14,6 +16,16 @@ namespace PeekABoo.Clues
         protected override void OnReleased()
         {
             clueRegistry.UnregisterClue(this);
+        }
+
+        public void Init(ClueConfig clueConfig)
+        {
+            config = clueConfig;
+        }
+
+        public void Collect()
+        {
+
         }
     }
 }

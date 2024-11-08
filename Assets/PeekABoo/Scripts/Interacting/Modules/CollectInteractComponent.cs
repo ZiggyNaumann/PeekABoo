@@ -1,4 +1,6 @@
-﻿namespace PeekABoo.Interacting.Modules
+﻿using PeekABoo.Clues;
+
+namespace PeekABoo.Interacting.Modules
 {
     public class CollectInteractComponent : InteractComponent
     {
@@ -6,7 +8,14 @@
 
         protected override void OnInteractBegin()
         {
-            // TODO: Collect item into inventory
+            Clue clue = Interactable.GetComponent<Clue>();
+
+            if (!clue)
+            {
+                return;
+            }
+
+            clue.Collect();
         }
 
         protected override void OnInteractEnd()
