@@ -20,6 +20,8 @@ namespace PeekABoo.Levels
 
     public class Level : CardboardCoreBehaviour
     {
+        [Inject] private CluesManager cluesManager;
+
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private LevelProgression levelProgression;
 
@@ -62,11 +64,14 @@ namespace PeekABoo.Levels
             {
                 room.Populate();
             }
+        }
 
+        public void SetupDoors()
+        {
             for (int i = 0; i < levelProgression.OpenableDoors.Length; i++)
             {
                 Door door = levelProgression.OpenableDoors[i];
-                door.SetOpenable(i);
+                door.SetOpenable(i, cluesManager.GetClueConfig(i));
             }
         }
 

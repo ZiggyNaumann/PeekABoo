@@ -1,7 +1,10 @@
 ﻿using System;
 using CardboardCore.DI;
 using DG.Tweening;
+using PeekABoo.Clues;
+using PeekABoo.Levels.Rooms.Paintings;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PeekABoo.Levels.Rooms.Doors
 {
@@ -10,31 +13,30 @@ namespace PeekABoo.Levels.Rooms.Doors
     {
         [SerializeField] private Vector3 offset;
         [SerializeField] private Ease ease;
+        [SerializeField] private float duration = 1f;
 
         public Vector3 Offset => offset;
         public Ease Ease => ease;
-
-        public Vector3 GetTargetLocalPosition(Transform transform)
-        {
-            // Get offset based on transform's forward vector
-            Vector3 targetPosition = transform.position + transform.forward * offset.z;
-            targetPosition += transform.right * offset.x;
-            targetPosition += transform.up * offset.y;
-
-            return targetPosition;
-        }
+        public float Duration => duration;
     }
 
     [Serializable]
     public class DoorTransition
     {
+        [SerializeField] private Transform animationRoot;
+        [SerializeField] private Collider[] collidersToDisable;
         [SerializeField] private DoorTransitionStep[] steps;
 
+        public Transform AnimationRoot => animationRoot;
+        public Collider[] CollidersToDisable => collidersToDisable;
         public DoorTransitionStep[] Steps => steps;
     }
 
     public class Door : CardboardCoreBehaviour
     {
+        [Inject] private CluesManager cluesManager;
+
+        [SerializeField] private Painting painting;
         [SerializeField] private DoorTransition doorTransition;
 
         private int doorClueIndex = -1;
@@ -53,17 +55,27 @@ namespace PeekABoo.Levels.Rooms.Doors
 
         protected override void OnInjected()
         {
-
+            painting.PaintingInteractEvent += OnPaintingInteract;
         }
 
         protected override void OnReleased()
         {
-
+            painting.PaintingInteractEvent -= OnPaintingInteract;
         }
 
-        public void SetOpenable(int index)
+        public void SetOpenable(int index, ClueConfig clueConfig)
         {
             doorClueIndex = index;
+
+            painting.SetTexture(clueConfig.Sprite);
+        }
+
+        private void OnPaintingInteract()
+        {
+            if (doorClueIndex == -1 || !TryOpen(cluesManager.ClueProgress.CollectedAmount - 1))
+            {
+                // TODO: Trigger alarm and after a timeout reset the painting's interactability
+            }
         }
 
         public bool TryOpen(int playerClueIndex)
@@ -73,13 +85,23 @@ namespace PeekABoo.Levels.Rooms.Doors
                 return false;
             }
 
+            foreach (Collider collider in doorTransition.CollidersToDisable)
+            {
+                collider.enabled = false;
+            }
+
             Sequence sequence = DOTween.Sequence();
+
+            Vector3 startPosition = doorTransition.AnimationRoot.localPosition;
+            Vector3 totalOffset = Vector3.zero;
 
             for (int i = 0; i < doorTransition.Steps.Length; i++)
             {
                 DoorTransitionStep step = doorTransition.Steps[i];
 
-                sequence.Append(transform.DOLocalMove(step.GetTargetLocalPosition(transform), 1f)
+                totalOffset += step.Offset;
+
+                sequence.Append(doorTransition.AnimationRoot.DOLocalMove(startPosition + totalOffset, step.Duration)
                     .SetEase(step.Ease));
             }
 

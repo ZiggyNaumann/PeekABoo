@@ -1,5 +1,6 @@
 ﻿using System;
 using CardboardCore.DI;
+using CardboardCore.Utilities;
 
 namespace PeekABoo.Clues
 {
@@ -24,6 +25,8 @@ namespace PeekABoo.Clues
         public void Init(ClueConfig clueConfig)
         {
             Config = clueConfig;
+
+            Log.Write(Config.Name);
         }
 
         public void Collect()

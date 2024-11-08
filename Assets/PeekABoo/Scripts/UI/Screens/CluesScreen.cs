@@ -53,6 +53,8 @@ namespace PeekABoo.UI.Screens
             ClueElement unlockedClueElement = clueElements[lastCollectedClueIndex];
             unlockedClueElement.SetImageVisible(false);
 
+            Vector3 originalPosition = newClue.transform.position;
+
             newClue.transform.DOMove(unlockedClueElement.transform.position, 1f)
                 .SetEase(Ease.InOutQuad)
                 .OnComplete(() =>
@@ -63,6 +65,8 @@ namespace PeekABoo.UI.Screens
                     unlockedClueElement.SetImageVisible(true);
                     unlockedClueElement.SetFound();
                     unlockedClueElement.transform.DOPunchScale(Vector3.one * 2f, 0.5f, 2, 0.3f);
+
+                    newClue.transform.position = originalPosition;
 
                     callback?.Invoke();
                 });

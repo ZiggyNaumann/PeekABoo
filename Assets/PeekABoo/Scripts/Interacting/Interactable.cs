@@ -58,6 +58,12 @@ namespace PeekABoo.Interacting
 
         public void Interact()
         {
+            if (interactComponent == null)
+            {
+                Log.Warn($"Interactable {name} has no InteractComponent.");
+                return;
+            }
+
             interactComponent.Interact();
             InteractEvent?.Invoke();
         }
