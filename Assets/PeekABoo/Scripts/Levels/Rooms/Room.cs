@@ -43,6 +43,11 @@ namespace PeekABoo.Levels.Rooms
 
         public ClueSpot GetRandomClueSpot()
         {
+            if (containers == null || containers.Length == 0)
+            {
+                return null;
+            }
+
             int randomContainerIndex = Random.Range(0, containers.Length);
             Container container = containers[randomContainerIndex];
             return container.GetClueSpot();
