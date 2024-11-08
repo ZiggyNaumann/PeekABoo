@@ -41,7 +41,7 @@ namespace PeekABoo.Clues
             clueConfigs = new List<ClueConfig>(clueDatabase.ClueConfigs);
             activeClues = new List<ClueSpawnConfig>();
 
-            for (int i = amount - 1; i >= 0; i--)
+            for (int i = 0; i < amount; i++)
             {
                 int randomIndex = Random.Range(0, clueConfigs.Count);
                 activeClues.Add(new ClueSpawnConfig(clueConfigs[randomIndex], clueSpots.ElementAt(i)));
@@ -56,7 +56,6 @@ namespace PeekABoo.Clues
             {
                 Clue clue = Instantiate(clueSpawnConfig.ClueConfig.CluePrefab, clueSpawnConfig.ClueSpot.transform);
                 clue.Init(clueSpawnConfig.ClueConfig);
-                // TODO: Spawn related painting
             }
         }
     }

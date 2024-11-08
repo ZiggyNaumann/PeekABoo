@@ -7,13 +7,12 @@ namespace PeekABoo.Clues
     [Injectable]
     public class CluesManager
     {
-        // TODO: Remove "int" for an in-world painting/door?
-        private readonly Dictionary<Clue, int> clues = new Dictionary<Clue, int>();
+        private readonly List<Clue> clues = new List<Clue>();
         private readonly List<ClueSpot> clueSpots = new List<ClueSpot>();
 
         public ClueProgress ClueProgress { get; } = new ClueProgress();
 
-        public IReadOnlyDictionary<Clue, int> Clues => clues;
+        public IReadOnlyCollection<Clue> Clues => clues;
         public IReadOnlyCollection<ClueSpot> ClueSpots => clueSpots;
 
         public event Action<Clue> ClueCollectedEvent;
@@ -26,17 +25,19 @@ namespace PeekABoo.Clues
 
         public void RegisterClue(Clue clue)
         {
-            if (!clues.TryAdd(clue, 0))
+            if (clues.Contains(clue))
             {
                 return;
             }
+
+            clues.Add(clue);
 
             clue.CollectedEvent += OnClueCollected;
         }
 
         public void UnregisterClue(Clue clue)
         {
-            if (!clues.ContainsKey(clue))
+            if (!clues.Contains(clue))
             {
                 return;
             }
@@ -44,6 +45,16 @@ namespace PeekABoo.Clues
             clues.Remove(clue);
 
             clue.CollectedEvent -= OnClueCollected;
+        }
+
+        public ClueConfig GetClueConfig(int index)
+        {
+            if (index < 0 || index >= clues.Count)
+            {
+                return null;
+            }
+
+            return clues[index].Config;
         }
 
         public void RegisterClueSpot(ClueSpot clueSpot)
