@@ -13,7 +13,11 @@ namespace PeekABoo.Gameplay.StateMachines
             AddStaticTransition<SpawnCluesState, TeleportPlayerToLevelState>();
             AddStaticTransition<TeleportPlayerToLevelState, FadeInState>();
             AddStaticTransition<FadeInState, ActiveGameplayState>();
-            AddStaticTransition<ActiveGameplayState, InspectCluesState>();
+
+            AddFreeFlowTransition<ActiveGameplayState, InspectCluesState>();
+            AddFreeFlowTransition<ActiveGameplayState, ShowCollectedClueState>();
+
+            AddStaticTransition<ShowCollectedClueState, InspectCluesState>();
             AddStaticTransition<InspectCluesState, ActiveGameplayState>();
         }
     }

@@ -55,6 +55,7 @@ namespace PeekABoo.Clues
             foreach (ClueSpawnConfig clueSpawnConfig in activeClues)
             {
                 Clue clue = Instantiate(clueSpawnConfig.ClueConfig.CluePrefab, clueSpawnConfig.ClueSpot.transform);
+                clue.Init(clueSpawnConfig.ClueConfig);
                 // TODO: Spawn related painting
             }
         }

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace PeekABook.Input
+namespace PeekABoo.Input
 {
     public partial class @PeekABooActions: IInputActionCollection2, IDisposable
     {
@@ -1119,6 +1119,15 @@ namespace PeekABook.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HideNewFoundClue"",
+                    ""type"": ""Button"",
+                    ""id"": ""9bc74e1c-4146-4c36-8017-0fde77b0ff76"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1130,6 +1139,17 @@ namespace PeekABook.Input
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""CloseClues"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ec4afba1-76df-476e-a644-3b45843efbcf"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HideNewFoundClue"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1229,6 +1249,7 @@ namespace PeekABook.Input
             // Clues
             m_Clues = asset.FindActionMap("Clues", throwIfNotFound: true);
             m_Clues_CloseClues = m_Clues.FindAction("CloseClues", throwIfNotFound: true);
+            m_Clues_HideNewFoundClue = m_Clues.FindAction("HideNewFoundClue", throwIfNotFound: true);
         }
 
         ~@PeekABooActions()
@@ -1581,11 +1602,13 @@ namespace PeekABook.Input
         private readonly InputActionMap m_Clues;
         private List<ICluesActions> m_CluesActionsCallbackInterfaces = new List<ICluesActions>();
         private readonly InputAction m_Clues_CloseClues;
+        private readonly InputAction m_Clues_HideNewFoundClue;
         public struct CluesActions
         {
             private @PeekABooActions m_Wrapper;
             public CluesActions(@PeekABooActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @CloseClues => m_Wrapper.m_Clues_CloseClues;
+            public InputAction @HideNewFoundClue => m_Wrapper.m_Clues_HideNewFoundClue;
             public InputActionMap Get() { return m_Wrapper.m_Clues; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1598,6 +1621,9 @@ namespace PeekABook.Input
                 @CloseClues.started += instance.OnCloseClues;
                 @CloseClues.performed += instance.OnCloseClues;
                 @CloseClues.canceled += instance.OnCloseClues;
+                @HideNewFoundClue.started += instance.OnHideNewFoundClue;
+                @HideNewFoundClue.performed += instance.OnHideNewFoundClue;
+                @HideNewFoundClue.canceled += instance.OnHideNewFoundClue;
             }
 
             private void UnregisterCallbacks(ICluesActions instance)
@@ -1605,6 +1631,9 @@ namespace PeekABook.Input
                 @CloseClues.started -= instance.OnCloseClues;
                 @CloseClues.performed -= instance.OnCloseClues;
                 @CloseClues.canceled -= instance.OnCloseClues;
+                @HideNewFoundClue.started -= instance.OnHideNewFoundClue;
+                @HideNewFoundClue.performed -= instance.OnHideNewFoundClue;
+                @HideNewFoundClue.canceled -= instance.OnHideNewFoundClue;
             }
 
             public void RemoveCallbacks(ICluesActions instance)
@@ -1700,6 +1729,7 @@ namespace PeekABook.Input
         public interface ICluesActions
         {
             void OnCloseClues(InputAction.CallbackContext context);
+            void OnHideNewFoundClue(InputAction.CallbackContext context);
         }
     }
 }

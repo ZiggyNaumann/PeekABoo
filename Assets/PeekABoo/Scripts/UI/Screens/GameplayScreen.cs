@@ -10,6 +10,8 @@ namespace PeekABoo.UI.Screens
 {
     public class GameplayScreen : UIScreen
     {
+        private const float StaminaBarWidth = 900;
+
         [SerializeField] private Image backPanel;
         [SerializeField] private Image staminaBar;
 
@@ -17,21 +19,19 @@ namespace PeekABoo.UI.Screens
 
         [SerializeField] private TextMeshProUGUI cluesText;
 
-        private float staminaBarWidth = 900;
 
         private Tween fadeOutTween;
         private Tween fadeInTween;
 
         protected override void OnShow()
         {
-            // staminaBarWidth = staminaBar.rectTransform.sizeDelta.x;
             staminaBar.DOFade(0, 0);
             cluesText.DOFade(0, 0);
         }
 
         protected override void OnHide()
         {
-            staminaBar.rectTransform.sizeDelta = new Vector2(staminaBarWidth, staminaBar.rectTransform.sizeDelta.y);
+            staminaBar.rectTransform.sizeDelta = new Vector2(StaminaBarWidth, staminaBar.rectTransform.sizeDelta.y);
         }
 
         public void PlayFadeOut(Action callback)
@@ -59,7 +59,7 @@ namespace PeekABoo.UI.Screens
                 fadeInTween ??= staminaBar.DOFade(1f, 0.5f);
             }
 
-            staminaBar.rectTransform.sizeDelta = new Vector2(staminaBarWidth * normalizedValue, staminaBar.rectTransform.sizeDelta.y);
+            staminaBar.rectTransform.sizeDelta = new Vector2(StaminaBarWidth * normalizedValue, staminaBar.rectTransform.sizeDelta.y);
         }
 
         public void ShowExhaustedState()

@@ -1,6 +1,6 @@
 ﻿using System;
 using CardboardCore.DI;
-using PeekABook.Input;
+using PeekABoo.Input;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

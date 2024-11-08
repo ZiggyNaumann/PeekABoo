@@ -2,7 +2,7 @@
 using CardboardCore.StateMachines;
 using CardboardCore.UI;
 using PeekABoo.UI.Screens;
-using PeekABook.Input;
+using PeekABoo.Input;
 using UnityEngine.InputSystem;
 
 namespace PeekABoo.Gameplay.StateMachines.States
@@ -16,7 +16,6 @@ namespace PeekABoo.Gameplay.StateMachines.States
 
         protected override void OnEnter()
         {
-            inputManager.DisablePlayer();
             inputManager.EnableClues();
 
             inputManager.Clues.CloseClues.performed += OnCloseClues;
@@ -26,6 +25,7 @@ namespace PeekABoo.Gameplay.StateMachines.States
 
         protected override void OnExit()
         {
+            inputManager.DisableClues();
             inputManager.Clues.CloseClues.performed -= OnCloseClues;
         }
 

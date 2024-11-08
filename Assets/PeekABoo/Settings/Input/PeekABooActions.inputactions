@@ -1095,6 +1095,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "HideNewFoundClue",
+                    "type": "Button",
+                    "id": "9bc74e1c-4146-4c36-8017-0fde77b0ff76",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1106,6 +1115,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CloseClues",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ec4afba1-76df-476e-a644-3b45843efbcf",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "HideNewFoundClue",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
