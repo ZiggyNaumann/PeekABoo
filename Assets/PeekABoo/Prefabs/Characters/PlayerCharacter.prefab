@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spherecastRadius: 0.1
-  spherecastDistance: 5
+  spherecastDistance: 1.25
 --- !u!1 &1990976081610872574
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,6 @@ namespace PeekABoo.Interacting
 
     public abstract class InteractComponent : CardboardCoreBehaviour
     {
-        private Interactable interactable;
         private bool isInteracting;
 
         protected abstract InteractionType InteractionType { get; }
@@ -18,9 +17,11 @@ namespace PeekABoo.Interacting
         protected abstract void OnInteractBegin();
         protected abstract void OnInteractEnd();
 
+        protected Interactable Interactable { get; private set; }
+
         protected override void OnInjected()
         {
-            interactable = GetComponent<Interactable>();
+            Interactable = GetComponent<Interactable>();
         }
 
         protected override void OnReleased()
@@ -37,10 +38,10 @@ namespace PeekABoo.Interacting
                     isInteracting = true;
                     OnInteractBegin();
 
+                    Interactable.DisableInteraction();
+
                     isInteracting = false;
                     OnInteractEnd();
-
-                    interactable.DisableInteraction();
 
                     break;
 

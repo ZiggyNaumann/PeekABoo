@@ -4,12 +4,22 @@ using UnityEngine;
 
 namespace PeekABoo.Interacting
 {
+    [Serializable]
+    public class InteractableChainConfig
+    {
+        [SerializeField] private Interactable dependentInteractable;
+
+        public Interactable DependentInteractable => dependentInteractable;
+    }
+
     public class Interactable : CardboardCoreBehaviour
     {
         [Inject] private InteractableRegistry interactableRegistry;
 
         [SerializeField] private GameObject interactableCollidersContainer;
         [SerializeField] private Transform interactPromptPoint;
+
+        [SerializeField] private InteractableChainConfig[] interactableChainConfigs;
 
         private InteractComponent interactComponent;
 
@@ -23,6 +33,11 @@ namespace PeekABoo.Interacting
             interactableRegistry.RegisterInteractable(this);
 
             interactComponent = GetComponent<InteractComponent>();
+
+            foreach (InteractableChainConfig chainConfig in interactableChainConfigs)
+            {
+                chainConfig.DependentInteractable.DisableInteraction();
+            }
         }
 
         protected override void OnReleased()
@@ -33,6 +48,11 @@ namespace PeekABoo.Interacting
         public void Interact()
         {
             interactComponent.Interact();
+
+            foreach (InteractableChainConfig chainConfig in interactableChainConfigs)
+            {
+                chainConfig.DependentInteractable.EnableInteraction();
+            }
         }
 
         public void ShowHighlight()
