@@ -31,9 +31,23 @@ namespace CardboardCore.UI
         private UIScreen currentUIScreen;
 
         public Camera UICamera => uiCamera;
+        public Canvas UICanvas { get; private set; }
 
         private void Awake()
         {
+            Canvas[] canvasArray = GetComponentsInChildren<Canvas>();
+
+            foreach (Canvas canvas in canvasArray)
+            {
+                if (!canvas.isRootCanvas)
+                {
+                    continue;
+                }
+
+                UICanvas = canvas;
+                break;
+            }
+
             List<UIScreen> uiScreens = new List<UIScreen>();
             List<UIWidget> uiWidgets = new List<UIWidget>();
 
