@@ -33,7 +33,6 @@ namespace PeekABoo.UI.Screens
             for (int i = 0; i < words.Length; i++)
             {
                 introText.text = words[i];
-
                 yield return new WaitForSeconds(timeBetweenWords);
             }
 

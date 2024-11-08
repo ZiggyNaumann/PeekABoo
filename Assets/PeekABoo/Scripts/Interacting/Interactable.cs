@@ -1,32 +1,27 @@
 ﻿using System;
 using CardboardCore.DI;
+using CardboardCore.Utilities;
 using UnityEngine;
 
 namespace PeekABoo.Interacting
 {
-    [Serializable]
-    public class InteractableChainConfig
-    {
-        [SerializeField] private Interactable dependentInteractable;
-
-        public Interactable DependentInteractable => dependentInteractable;
-    }
-
     public class Interactable : CardboardCoreBehaviour
     {
         [Inject] private InteractableRegistry interactableRegistry;
 
         [SerializeField] private GameObject interactableCollidersContainer;
         [SerializeField] private Transform interactPromptPoint;
-
-        [SerializeField] private InteractableChainConfig[] interactableChainConfigs;
+        [SerializeField] private bool dependsOnParentInteractable;
 
         private InteractComponent interactComponent;
+        private Interactable parentInteractable;
 
         public Transform InteractPromptPoint => interactPromptPoint;
 
         public event Action EnableInteractionEvent;
         public event Action DisableInteractionEvent;
+
+        public event Action InteractEvent;
 
         protected override void OnInjected()
         {
@@ -34,10 +29,26 @@ namespace PeekABoo.Interacting
 
             interactComponent = GetComponent<InteractComponent>();
 
-            foreach (InteractableChainConfig chainConfig in interactableChainConfigs)
+            if (dependsOnParentInteractable && transform.parent != null)
             {
-                chainConfig.DependentInteractable.DisableInteraction();
+                parentInteractable = transform.parent.GetComponentInParent<Interactable>();
+
+                if (parentInteractable == null)
+                {
+                    Log.Warn($"Interactable {name} depends on parent interactable, but no parent interactable found.");
+                }
+                else
+                {
+                    parentInteractable.InteractEvent += OnParentInteract;
+                    DisableInteraction();
+                }
             }
+        }
+
+        private void OnParentInteract()
+        {
+            parentInteractable.InteractEvent -= OnParentInteract;
+            EnableInteraction();
         }
 
         protected override void OnReleased()
@@ -48,11 +59,7 @@ namespace PeekABoo.Interacting
         public void Interact()
         {
             interactComponent.Interact();
-
-            foreach (InteractableChainConfig chainConfig in interactableChainConfigs)
-            {
-                chainConfig.DependentInteractable.EnableInteraction();
-            }
+            InteractEvent?.Invoke();
         }
 
         public void ShowHighlight()

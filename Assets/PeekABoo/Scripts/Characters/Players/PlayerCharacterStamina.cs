@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using CardboardCore.DI;
+using CardboardCore.UI;
 using CardboardCore.Utilities;
 using PeekABoo.UI.Screens;
 using UnityEngine;
@@ -16,6 +18,8 @@ namespace PeekABoo.Characters.Players
 
     public class PlayerCharacterStamina : CharacterComponent
     {
+        [Inject] private UIManager uiManager;
+
         [SerializeField] private float staminaRecoveryRate = 0.1f;
         [SerializeField] private float sprintStaminaCost = 0.05f;
         [SerializeField] private float durationBeforeRecovery = 1f;
@@ -31,6 +35,8 @@ namespace PeekABoo.Characters.Players
         protected override void OnInjected()
         {
             base.OnInjected();
+
+            gameplayScreen = uiManager.GetScreen<GameplayScreen>();
 
             currentStamina = 1f;
             StaminaState = StaminaState.Normal;
@@ -106,11 +112,6 @@ namespace PeekABoo.Characters.Players
             yield return new WaitForSeconds(durationBeforeRecovery);
 
             SetStaminaState(StaminaState.Recovering);
-        }
-
-        public void SetGameplayScreenReference(GameplayScreen gameplayScreen)
-        {
-            this.gameplayScreen = gameplayScreen;
         }
 
         public bool BeginSprint()
