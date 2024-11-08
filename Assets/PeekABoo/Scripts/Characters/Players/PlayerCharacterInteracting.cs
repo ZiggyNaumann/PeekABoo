@@ -23,21 +23,40 @@ namespace PeekABoo.Characters.Players
             base.OnInjected();
 
             playerCharacterInput = Owner.GetCharacterComponent<PlayerCharacterInput>();
+            playerCharacterInput.InteractEvent += OnInteractEvent;
 
             gameplayScreen = uiManager.GetScreen<GameplayScreen>();
+        }
+
+        protected override void OnReleased()
+        {
+            playerCharacterInput.InteractEvent -= OnInteractEvent;
+
+            base.OnReleased();
+        }
+
+        private void OnInteractEvent()
+        {
+            if (targetedInteractable != null)
+            {
+                targetedInteractable.Interact();
+            }
         }
 
         private void Update()
         {
             // Spherecast for interactable objects
             RaycastHit[] hits = Physics.SphereCastAll(Owner.FirstPersonCamera.transform.position, spherecastRadius,
-                                                      Owner.FirstPersonCamera.transform.forward, spherecastDistance);
+                                                      Owner.FirstPersonCamera.transform.forward, spherecastDistance,
+                                                      LayerMask.GetMask("Interactable"));
 
             Interactable nearestInteractable = null;
 
             foreach (RaycastHit hit in hits)
             {
-                if (!hit.collider.TryGetComponent(out Interactable interactable))
+                Interactable interactable = hit.collider.GetComponentInParent<Interactable>();
+
+                if (!interactable)
                 {
                     continue;
                 }
@@ -60,32 +79,53 @@ namespace PeekABoo.Characters.Players
 
             if (nearestInteractable != null)
             {
+                bool isInteractableUpdated = false;
+
                 if (targetedInteractable == null)
                 {
                     targetedInteractable = nearestInteractable;
-                    targetedInteractable.ShowHighlight();
-
-                    gameplayScreen.ShowInteractPrompt(targetedInteractable.transform);
+                    isInteractableUpdated = true;
                 }
                 else if (targetedInteractable != nearestInteractable)
                 {
                     targetedInteractable.HideHighlight();
                     targetedInteractable = nearestInteractable;
+                    isInteractableUpdated = true;
+                }
+
+                if (isInteractableUpdated)
+                {
                     targetedInteractable.ShowHighlight();
 
-                    gameplayScreen.ShowInteractPrompt(targetedInteractable.transform);
+                    Transform point = targetedInteractable.InteractPromptPoint ?? targetedInteractable.transform;
+                    gameplayScreen.ShowInteractPrompt(point);
+
+                    targetedInteractable.DisableInteractionEvent += OnTargetedInteractableDisableInteraction;
                 }
             }
             else
             {
                 if (targetedInteractable != null)
                 {
+                    targetedInteractable.DisableInteractionEvent -= OnTargetedInteractableDisableInteraction;
+
                     targetedInteractable.HideHighlight();
                     targetedInteractable = null;
 
                     gameplayScreen.HideInteractPrompt();
                 }
             }
+        }
+
+        private void OnTargetedInteractableDisableInteraction()
+        {
+            targetedInteractable.DisableInteractionEvent -= OnTargetedInteractableDisableInteraction;
+
+            targetedInteractable.HideHighlight();
+
+            targetedInteractable = null;
+
+            gameplayScreen.HideInteractPrompt();
         }
     }
 }
