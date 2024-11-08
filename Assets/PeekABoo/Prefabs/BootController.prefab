@@ -95,6 +95,7 @@ Transform:
   - {fileID: 7532597071173608530}
   - {fileID: 780690154827050134}
   - {fileID: 2551380210535252070}
+  - {fileID: 1576678838398105706}
   - {fileID: 7465371932343191397}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -110,6 +111,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6fe263bd8040dbaf9e2c40de267340, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6884284124360776907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576678838398105706}
+  - component: {fileID: 4924416508380287530}
+  m_Layer: 0
+  m_Name: LevelManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1576678838398105706
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884284124360776907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7844315511805848998}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4924416508380287530
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6884284124360776907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed5c2aff7bce41209635c1487e4e750a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelDatabase: {fileID: 11400000, guid: 88513de062bcce841b0759b7946a8d53, type: 2}
 --- !u!1 &8197337378883858584
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3555143982049377042, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 253.33333
+      value: 253.33331
       objectReference: {fileID: 0}
     - target: {fileID: 3555143982049377042, guid: 1741c0dcdcf248f4494f5214f6704aaa, type: 3}
       propertyPath: m_AnchoredPosition.y
