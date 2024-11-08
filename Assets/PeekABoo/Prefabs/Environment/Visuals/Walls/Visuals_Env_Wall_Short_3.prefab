@@ -56,6 +56,10 @@ PrefabInstance:
       propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5508092414922466862, guid: 7cbb638a3a33d9244a5b77cb2fc2cb6b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d0d32cb339f533b4fbb9234aff3b409b, type: 2}
     - target: {fileID: 919132149155446097, guid: 7cbb638a3a33d9244a5b77cb2fc2cb6b, type: 3}
       propertyPath: m_Name
       value: Visuals_Env_Wall_Short_3
@@ -68,6 +72,10 @@ PrefabInstance:
       propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2097851867823877191, guid: 7cbb638a3a33d9244a5b77cb2fc2cb6b, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 15a74c11129f9e7498d15f64468eab49, type: 2}
     - target: {fileID: 3488495663949843854, guid: 7cbb638a3a33d9244a5b77cb2fc2cb6b, type: 3}
       propertyPath: m_CastShadows
       value: 3
