@@ -5,7 +5,7 @@ namespace PeekABoo.Clues
 {
     public class ClueSpot : CardboardCoreBehaviour
     {
-        [Inject] private ClueRegistry clueRegistry;
+        [Inject] private CluesManager cluesManager;
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -20,12 +20,12 @@ namespace PeekABoo.Clues
 
         protected override void OnInjected()
         {
-            clueRegistry.RegisterClueSpot(this);
+            cluesManager.RegisterClueSpot(this);
         }
 
         protected override void OnReleased()
         {
-            clueRegistry.UnregisterClueSpot(this);
+            cluesManager.UnregisterClueSpot(this);
         }
     }
 }

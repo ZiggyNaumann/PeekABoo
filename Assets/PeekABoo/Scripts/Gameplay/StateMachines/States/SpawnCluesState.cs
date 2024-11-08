@@ -7,7 +7,7 @@ namespace PeekABoo.Gameplay.StateMachines.States
 {
     public class SpawnCluesState : State
     {
-        [Inject] private ClueRegistry clueRegistry;
+        [Inject] private CluesManager cluesManager;
         [Inject] private ClueFactory clueFactory;
         [Inject] private LevelManager levelManager;
 

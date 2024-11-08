@@ -1,21 +1,27 @@
-﻿using CardboardCore.DI;
+﻿using System.Collections.Generic;
 
 namespace PeekABoo.Clues
 {
-    [Injectable]
     public class ClueProgress
     {
-        public int TotalClues { get; private set; }
-        public int CollectedClues { get; private set; }
+        private readonly List<ClueConfig> collectedClues = new List<ClueConfig>();
 
-        public void SetTotalClues(int totalClues)
+        public IReadOnlyList<ClueConfig> CollectedClues => collectedClues;
+        public int CollectedAmount => collectedClues.Count;
+
+        public void Reset()
         {
-            TotalClues = totalClues;
+            collectedClues.Clear();
         }
 
-        public void CollectClue()
+        public void CollectClue(Clue clue)
         {
-            CollectedClues++;
+            if (collectedClues.Contains(clue.Config))
+            {
+                return;
+            }
+
+            collectedClues.Add(clue.Config);
         }
     }
 }
