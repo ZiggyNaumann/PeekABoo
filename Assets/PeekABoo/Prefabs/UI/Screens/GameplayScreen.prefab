@@ -402,6 +402,7 @@ MonoBehaviour:
   backPanel: {fileID: 660322195506450956}
   staminaBar: {fileID: 7960680016913254522}
   interactPromptElement: {fileID: 2393806478586964685}
+  cluesText: {fileID: 8138163678135952713}
 --- !u!1 &6279301424916310204
 GameObject:
   m_ObjectHideFlags: 0
